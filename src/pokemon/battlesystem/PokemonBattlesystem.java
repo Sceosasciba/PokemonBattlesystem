@@ -43,7 +43,7 @@ public class PokemonBattlesystem {
         charmander.setSpeedPoke(65);
         charmander.setMove1Poke("ember");
         charmander.setLevelPoke(5);
-        
+
         Pokemon squirtle = new Pokemon();
         squirtle.setNaamPoke("Squirtle");
         squirtle.setType1Poke("Water");
@@ -63,7 +63,7 @@ public class PokemonBattlesystem {
         tackle.setTypeMove("Normal");
         tackle.setCategoryMove("Physical");
         tackle.setPpMove(35);
-        
+
         Moves scratch = new Moves();
         scratch.setNameMove("Scratch");
         scratch.setPowerMove(40);
@@ -71,15 +71,15 @@ public class PokemonBattlesystem {
         scratch.setTypeMove("Normal");
         scratch.setCategoryMove("Physical");
         scratch.setPpMove(35);
-        
+
         Moves ember = new Moves();
         ember.setNameMove("Ember");
         ember.setPowerMove(60);
-        ember.setAccuracyMove(50);
+        ember.setAccuracyMove(100);
         ember.setTypeMove("Fire");
         ember.setCategoryMove("Special");
         ember.setPpMove(25);
-        
+
         Moves watergun = new Moves();
         watergun.setNameMove("Watergun");
         watergun.setPowerMove(40);
@@ -95,15 +95,14 @@ public class PokemonBattlesystem {
         vinewhip.setTypeMove("Grass");
         vinewhip.setCategoryMove("Physical");
         vinewhip.setPpMove(25);
-        
+
         Types base = new Types();
         base.setTypeStat(1);
         base.setTypeAccuracy(0);
 
 //       System.out.println(ember.getTypeMove());
         Battle(bulbasaur, charmander, vinewhip, ember, base);
-        
-        
+
     }
 
     //Damage calculation method
@@ -135,7 +134,7 @@ public class PokemonBattlesystem {
             double multiplierType = 2;
             base.setTypeMultiplier(multiplierType);
             base.setTypeStat(multiplierType);
-            
+
             //Not very effective
             if (move.getTypeMove() == "Normal" && defender.getType1Poke() == "Rock" || move.getTypeMove() == "Normal" && defender.getType2Poke() == "Rock"
                     || move.getTypeMove() == "Normal" && defender.getType1Poke() == "Steel" || move.getTypeMove() == "Normal" && defender.getType2Poke() == "Steel"
@@ -151,7 +150,7 @@ public class PokemonBattlesystem {
                 base.setTypeMultiplier(multiplierType);
                 base.setTypeStat(multiplierType);
             }
-            
+
             //Immune
             if (move.getTypeMove() == "Normal" && defender.getType1Poke() == "Ghost" || move.getTypeMove() == "Normal" && defender.getType2Poke() == "Ghost") {
                 multiplierType = 0;
@@ -171,7 +170,7 @@ public class PokemonBattlesystem {
             double multiplierType = 0.5;
             base.setTypeMultiplier(multiplierType);
             base.setTypeStat(multiplierType);
-            
+
             //Immune
             if (move.getTypeMove() == "Normal" && defender.getType1Poke() == "Ghost" || move.getTypeMove() == "Normal" && defender.getType2Poke() == "Ghost") {
                 multiplierType = 0;
@@ -200,7 +199,7 @@ public class PokemonBattlesystem {
         //Accuracy
         base.setTypeAccuracy(0);
         double random = Math.random() * 100;
-        if(random <= move.getAccuracyMove()){
+        if (random <= move.getAccuracyMove()) {
             //Do absolutely nothing
         } else {
             double getValue = base.getTypeStat();
@@ -208,7 +207,7 @@ public class PokemonBattlesystem {
             base.setTypeStat(multiplierType);
             base.setTypeAccuracy(1);
         }
-        
+
         //Damage calculations
         double modifier = base.getTypeStat() * 1;
         if (move.getCategoryMove() == "Physical") {
@@ -233,31 +232,45 @@ public class PokemonBattlesystem {
                 int damage = DamageOutput(poke1, poke2, move1, base);
                 int remainingHp = poke2.getHpPoke() - damage;
                 poke2.setHpPoke(remainingHp);
-                if(base.getTypeAccuracy() == 1){
-                    System.out.println(poke1 + " misses, while using " + move1 + ".");
+                int PpLeft = move1.getPpMove();
+                PpLeft = PpLeft - 1;
+                move1.setPpMove(PpLeft);
+                if (base.getTypeAccuracy() == 1) {
+                    System.out.println(poke1 + " misses, while using " + move1 + ". " + move1 + " still has " + move1.getPpMove() + " PP left.");
                 } else if (base.getTypeMultiplier() >= 2) {
-                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. It was super effective.");
+                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
+                            + "It was super effective. "  + move1 + " still has " + move1.getPpMove() + " PP left.");
                 } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. It was not very effective.");
+                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
+                            + "It was not very effective. "  + move1 + " still has " + move1.getPpMove() + " PP left.");
                 } else if (base.getTypeMultiplier() == 0) {
-                        System.out.println(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ".");
+                    System.out.println(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ". "  
+                            + move1 + " still has " + move1.getPpMove() + " PP left.");
                 } else {
-                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left.");
+                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
+                     + move1 + " still has " + move1.getPpMove() + " PP left.");
                 }
                 if (poke2.getHpPoke() > 0) {
                     damage = DamageOutput(poke2, poke1, move2, base);
                     remainingHp = poke1.getHpPoke() - damage;
                     poke1.setHpPoke(remainingHp);
-                    if(base.getTypeAccuracy() == 1){
-                    System.out.println(poke2 + " misses, while using " + move2 + ".");
+                    PpLeft = move2.getPpMove();
+                    PpLeft = PpLeft - 1;
+                    move2.setPpMove(PpLeft);
+                    if (base.getTypeAccuracy() == 1) {
+                        System.out.println(poke2 + " misses, while using " + move2 + ". " + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else if (base.getTypeMultiplier() >= 2) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. It was very effective.");
+                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
+                                + "It was very effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. It wasnot v ery effective.");
+                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
+                                + "It was not very effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else if (base.getTypeMultiplier() == 0) {
-                        System.out.println(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ".");
+                        System.out.println(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ". "
+                         + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left.");
+                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
+                         + move2 + " still has " + move2.getPpMove() + " PP left.");
                     }
                 }
             } else {
@@ -265,31 +278,45 @@ public class PokemonBattlesystem {
                     int damage = DamageOutput(poke2, poke1, move2, base);
                     int remainingHp = poke1.getHpPoke() - damage;
                     poke1.setHpPoke(remainingHp);
-                    if(base.getTypeAccuracy() == 1){
-                    System.out.println(poke2 + " misses, while using " + move2 + ".");
+                    int PpLeft = move2.getPpMove();
+                    PpLeft = PpLeft - 1;
+                    move2.setPpMove(PpLeft);
+                    if (base.getTypeAccuracy() == 1) {
+                        System.out.println(poke2 + " misses, while using " + move2 + ". " + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else if (base.getTypeStat() >= 2) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. It was super effective.");
+                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
+                                + "It was super effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. It was not very effective.");
+                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
+                                + "It was not very effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else if (base.getTypeMultiplier() == 0) {
-                        System.out.println(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ".");
+                        System.out.println(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ". "
+                         + move2 + " still has " + move2.getPpMove() + " PP left.");
                     } else {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left.");
+                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
+                         + move2 + " still has " + move2.getPpMove() + " PP left.");
                     }
                     if (poke1.getHpPoke() > 0) {
                         damage = DamageOutput(poke1, poke2, move1, base);
                         remainingHp = poke2.getHpPoke() - damage;
                         poke2.setHpPoke(remainingHp);
-                        if(base.getTypeAccuracy() == 1){
-                            System.out.println(poke1 + " misses, while using " + move1 + ".");
+                        PpLeft = move1.getPpMove();
+                        PpLeft = PpLeft - 1;
+                        move1.setPpMove(PpLeft);
+                        if (base.getTypeAccuracy() == 1) {
+                            System.out.println(poke1 + " misses, while using " + move1 + ". " + move1 + " still has " + move1.getPpMove() + " PP left.");
                         } else if (base.getTypeStat() >= 2) {
-                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. It was super effective.");
+                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
+                                    + "It was super effective. " + move1 + " still has " + move1.getPpMove() + " PP left.");
                         } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. It was not very effective.");
+                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
+                                    + "It was not very effective. " + move1 + " still has " + move1.getPpMove() + " PP left.");
                         } else if (base.getTypeMultiplier() == 0) {
-                            System.out.println(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ".");
+                            System.out.println(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ". "
+                             + move1 + " still has " + move1.getPpMove() + " PP left.");
                         } else {
-                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left.");
+                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
+                             + move1 + " still has " + move1.getPpMove() + " PP left.");
                         }
                     }
                 }
