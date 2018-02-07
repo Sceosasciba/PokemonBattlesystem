@@ -13,6 +13,15 @@ public class Types {
     
     private double TypeStat;
     private double TypeMultiplier;
+    private int TypeAccuracy;
+
+    public void setTypeAccuracy(int TypeAccuracy) {
+        this.TypeAccuracy = TypeAccuracy;
+    }
+
+    public int getTypeAccuracy() {
+        return TypeAccuracy;
+    }
     
     public Types(){
         this.TypeStat = 0;
