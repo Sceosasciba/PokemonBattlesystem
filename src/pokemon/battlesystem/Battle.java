@@ -12,7 +12,18 @@ import static pokemon.battlesystem.DamageOutput.DamageOutput;
  * @author Stan
  */
 public class Battle {
-    public static void Battle(Pokemon poke1, Pokemon poke2, Moves move1, Moves move2, BattleModifier base) {
+
+    private String BattleText;
+
+    public void setBattleText(String BattleText) {
+        this.BattleText = BattleText;
+    }
+
+    public String getBattleText() {
+        return BattleText;
+    }
+
+    public static void PokemonBattle(Pokemon poke1, Pokemon poke2, Moves move1, Moves move2, BattleModifier base, Battle battle, Text text) {
         while (poke1.getHpPoke() > 0 && poke2.getHpPoke() > 0) {
             if (poke1.getSpeedPoke() > poke2.getSpeedPoke()) {
                 int damage = DamageOutput(poke1, poke2, move1, base);
@@ -21,20 +32,40 @@ public class Battle {
                 int PpLeft = move1.getPpMove();
                 PpLeft = PpLeft - 1;
                 move1.setPpMove(PpLeft);
+                text.setPp(move1 + " still has " + move1.getPpMove() + " PP left. ");
+                text.setHpLeft(poke2 + " got " + poke2.getHpPoke() + " HP left. ");
                 if (base.getTypeAccuracy() == 1) {
-                    System.out.println(poke1 + " misses, while using " + move1 + ". " + move1 + " still has " + move1.getPpMove() + " PP left.");
+                    battle.setBattleText(poke1 + " misses, while using " + move1 + ". ");
+
                 } else if (base.getTypeMultiplier() >= 2) {
-                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
-                            + "It was super effective. "  + move1 + " still has " + move1.getPpMove() + " PP left.");
+                    battle.setBattleText(poke1 + " hits " + poke2 + " with " + move1 + ", it does " + damage + " damage. " + "It is super effective. ");
+
                 } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
-                            + "It was not very effective. "  + move1 + " still has " + move1.getPpMove() + " PP left.");
+                    battle.setBattleText(poke1 + " hits " + poke2 + " with " + move1 + ", it does " + damage + " damage. " + "It is not very effective. ");
+
                 } else if (base.getTypeMultiplier() == 0) {
-                    System.out.println(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ". "  
-                            + move1 + " still has " + move1.getPpMove() + " PP left.");
+                    battle.setBattleText(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ". ");
+                    base.setTypeCritical(0);
+
                 } else {
-                    System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
-                     + move1 + " still has " + move1.getPpMove() + " PP left.");
+                    battle.setBattleText(poke1 + " hits " + poke2 + " with " + move1 + ", it does " + damage + " damage. ");
+
+                }
+                if (poke2.getHpPoke() <= 0) {
+                    text.setHpLeft(poke2 + " died. ");
+                    if (base.getTypeCritical() == 1) {
+                        battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                        System.out.println(battle.getBattleText());
+                    } else {
+                        battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                        System.out.println(battle.getBattleText());
+                    }
+                } else if (base.getTypeCritical() == 1) {
+                    battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                    System.out.println(battle.getBattleText());
+                } else {
+                    battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                    System.out.println(battle.getBattleText());
                 }
                 if (poke2.getHpPoke() > 0) {
                     damage = DamageOutput(poke2, poke1, move2, base);
@@ -43,21 +74,36 @@ public class Battle {
                     PpLeft = move2.getPpMove();
                     PpLeft = PpLeft - 1;
                     move2.setPpMove(PpLeft);
+                    text.setPp(move2 + " still has " + move2.getPpMove() + " PP left.");
+                    text.setHpLeft(poke1 + " got " + poke1.getHpPoke() + " HP left. ");
                     if (base.getTypeAccuracy() == 1) {
-                        System.out.println(poke2 + " misses, while using " + move2 + ". " + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " misses, while using " + move2 + ". ");
                     } else if (base.getTypeMultiplier() >= 2) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
-                                + "It was very effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " hits " + poke1 + " with " + move2 + ", it does " + damage + " damage. " + "It is very effective. ");
                     } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
-                                + "It was not very effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " hits " + poke1 + " with " + move2 + ", it does " + damage + " damage. " + "It is not very effective. ");
                     } else if (base.getTypeMultiplier() == 0) {
-                        System.out.println(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ". "
-                         + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ". ");
+                        base.setTypeCritical(0);
                     } else {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
-                         + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " hits " + poke1 + " with " + move2 + ", it does " + damage + " damage. ");
                     }
+                }
+                if (poke1.getHpPoke() <= 0) {
+                    text.setHpLeft(poke1 + " died. ");
+                    if (base.getTypeCritical() == 1) {
+                        battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                        System.out.println(battle.getBattleText());
+                    } else {
+                        battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                        System.out.println(battle.getBattleText());
+                    }
+                } else if (base.getTypeCritical() == 1) {
+                    battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                    System.out.println(battle.getBattleText());
+                } else {
+                    battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                    System.out.println(battle.getBattleText());
                 }
             } else {
                 if (poke2.getSpeedPoke() > poke1.getSpeedPoke()) {
@@ -67,20 +113,35 @@ public class Battle {
                     int PpLeft = move2.getPpMove();
                     PpLeft = PpLeft - 1;
                     move2.setPpMove(PpLeft);
+                    text.setPp(move2 + " still has " + move2.getPpMove() + " PP left.");
+                    text.setHpLeft(poke1 + " got " + poke1.getHpPoke() + " HP left. ");
                     if (base.getTypeAccuracy() == 1) {
-                        System.out.println(poke2 + " misses, while using " + move2 + ". " + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " misses, while using " + move2 + ". ");
                     } else if (base.getTypeStat() >= 2) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
-                                + "It was super effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " hits " + poke1 + " with " + move2 + ", it does " + damage + " damage. " + "It is super effective. ");
                     } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
-                                + "It was not very effective. " + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " hits " + poke1 + " with " + move2 + ", it does " + damage + " damage. " + "It is not very effective. ");
                     } else if (base.getTypeMultiplier() == 0) {
-                        System.out.println(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ". "
-                         + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " tries to attack " + poke1 + " with " + move2 + ", but " + poke1 + " is immune to " + move2 + ". ");
+                        base.setTypeCritical(0);
                     } else {
-                        System.out.println(poke2 + " hits " + poke1 + " with " + move2 + ", it did " + damage + " damage. " + poke1 + " got " + poke1.getHpPoke() + " HP left. "
-                         + move2 + " still has " + move2.getPpMove() + " PP left.");
+                        battle.setBattleText(poke2 + " hits " + poke1 + " with " + move2 + ", it does " + damage + " damage. ");
+                    }
+                    if (poke1.getHpPoke() <= 0) {
+                        text.setHpLeft(poke1 + " died. ");
+                        if (base.getTypeCritical() == 1) {
+                            battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                            System.out.println(battle.getBattleText());
+                        } else {
+                            battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                            System.out.println(battle.getBattleText());
+                        }
+                    } else if (base.getTypeCritical() == 1) {
+                        battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                        System.out.println(battle.getBattleText());
+                    } else {
+                        battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                        System.out.println(battle.getBattleText());
                     }
                     if (poke1.getHpPoke() > 0) {
                         damage = DamageOutput(poke1, poke2, move1, base);
@@ -89,20 +150,35 @@ public class Battle {
                         PpLeft = move1.getPpMove();
                         PpLeft = PpLeft - 1;
                         move1.setPpMove(PpLeft);
+                        text.setPp(move1 + " still has " + move1.getPpMove() + " PP left.");
+                        text.setHpLeft(poke2 + " got " + poke2.getHpPoke() + " HP left. ");
                         if (base.getTypeAccuracy() == 1) {
-                            System.out.println(poke1 + " misses, while using " + move1 + ". " + move1 + " still has " + move1.getPpMove() + " PP left.");
+                            battle.setBattleText(poke1 + " misses, while using " + move1 + ". ");
                         } else if (base.getTypeStat() >= 2) {
-                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
-                                    + "It was super effective. " + move1 + " still has " + move1.getPpMove() + " PP left.");
+                            battle.setBattleText(poke1 + " hits " + poke2 + " with " + move1 + ", it does " + damage + " damage. " + "It is super effective. ");
                         } else if (base.getTypeMultiplier() == 0.5 || base.getTypeMultiplier() == 0.25) {
-                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
-                                    + "It was not very effective. " + move1 + " still has " + move1.getPpMove() + " PP left.");
+                            battle.setBattleText(poke1 + " hits " + poke2 + " with " + move1 + ", it does " + damage + " damage. " + "It is not very effective. ");
                         } else if (base.getTypeMultiplier() == 0) {
-                            System.out.println(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ". "
-                             + move1 + " still has " + move1.getPpMove() + " PP left.");
+                            battle.setBattleText(poke1 + " tries to attack " + poke2 + " with " + move1 + ", but " + poke2 + " is immune to " + move1 + ". ");
+                            base.setTypeCritical(0);
                         } else {
-                            System.out.println(poke1 + " hits " + poke2 + " with " + move1 + ", it did " + damage + " damage. " + poke2 + " got " + poke2.getHpPoke() + " HP left. "
-                             + move1 + " still has " + move1.getPpMove() + " PP left.");
+                            battle.setBattleText(poke1 + " hits " + poke2 + " with " + move1 + ", it does " + damage + " damage. ");
+                        }
+                        if (poke2.getHpPoke() <= 0) {
+                            text.setHpLeft(poke2 + " died. ");
+                            if (base.getTypeCritical() == 1) {
+                                battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                                System.out.println(battle.getBattleText());
+                            } else {
+                                battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                                System.out.println(battle.getBattleText());
+                            }
+                        } else if (base.getTypeCritical() == 1) {
+                            battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp() + base.getTypeCriticalHitText());
+                            System.out.println(battle.getBattleText());
+                        } else {
+                            battle.setBattleText(battle.getBattleText() + text.getHpLeft() + text.getPp());
+                            System.out.println(battle.getBattleText());
                         }
                     }
                 }
