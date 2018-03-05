@@ -20,89 +20,26 @@ public class PokemonBattlesystem {
     public static void main(String[] args) {
         // TODO code application logic here
 
-        Pokemon bulbasaur = new Pokemon();
-        bulbasaur.setNaamPoke("Bulbasaur");
-        bulbasaur.setType1Poke("Grass");
-        bulbasaur.setType2Poke("Poison");
-        bulbasaur.setHpPoke(45);
-        bulbasaur.setAtkPoke(49);
-        bulbasaur.setDefPoke(49);
-        bulbasaur.setSpAtkPoke(65);
-        bulbasaur.setSpDefPoke(65);
-        bulbasaur.setSpeedPoke(45);
-        bulbasaur.setMove1Poke("tackle");
-        bulbasaur.setLevelPoke(5);
+//        Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, "tackle", 5);
+        
+        Pokemon bulbasaur = new Pokemon("Bulbasaur", "Grass", "Poison", 45, 49, 49, 65, 65, 45, "tackle", 5);
+        Pokemon charmander = new Pokemon("Charmander", "Fire", 39, 52, 43, 60, 50, 65, "ember", 5);
+        Pokemon squirtle = new Pokemon("Squirtle", "Water", 44, 48, 65, 50, 64, 43, "watergun", 5);
+        
+        Moves tackle = new Moves("Tackle", 40, 100, "Normal", "Physical", 35);
+        Moves scratch = new Moves("Scratch", 40, 100, "Normal", "Physical", 35);
+        Moves ember = new Moves("Ember", 60, 100, "Fire", "Special", 25);
+        Moves watergun = new Moves("Watergun", 40, 100, "Water", "Special", 25);
+        Moves vinewhip = new Moves("Vinewhip", 45, 100, "Grass", "Physical", 25);
 
-        Pokemon charmander = new Pokemon();
-        charmander.setNaamPoke("Charmander");
-        charmander.setType1Poke("Fire");
-        charmander.setHpPoke(39);
-        charmander.setAtkPoke(52);
-        charmander.setDefPoke(43);
-        charmander.setSpAtkPoke(60);
-        charmander.setSpDefPoke(50);
-        charmander.setSpeedPoke(65);
-        charmander.setMove1Poke("ember");
-        charmander.setLevelPoke(5);
-
-        Pokemon squirtle = new Pokemon();
-        squirtle.setNaamPoke("Squirtle");
-        squirtle.setType1Poke("Water");
-        squirtle.setHpPoke(44);
-        squirtle.setAtkPoke(48);
-        squirtle.setDefPoke(65);
-        squirtle.setSpAtkPoke(50);
-        squirtle.setSpDefPoke(64);
-        squirtle.setSpeedPoke(43);
-        squirtle.setMove1Poke("watergun");
-        squirtle.setLevelPoke(5);
-
-        Moves tackle = new Moves();
-        tackle.setNameMove("Tackle");
-        tackle.setPowerMove(40);
-        tackle.setAccuracyMove(100);
-        tackle.setTypeMove("Normal");
-        tackle.setCategoryMove("Physical");
-        tackle.setPpMove(35);
-
-        Moves scratch = new Moves();
-        scratch.setNameMove("Scratch");
-        scratch.setPowerMove(40);
-        scratch.setAccuracyMove(100);
-        scratch.setTypeMove("Normal");
-        scratch.setCategoryMove("Physical");
-        scratch.setPpMove(35);
-
-        Moves ember = new Moves();
-        ember.setNameMove("Ember");
-        ember.setPowerMove(60);
-        ember.setAccuracyMove(70);
-        ember.setTypeMove("Fire");
-        ember.setCategoryMove("Special");
-        ember.setPpMove(25);
-
-        Moves watergun = new Moves();
-        watergun.setNameMove("Watergun");
-        watergun.setPowerMove(40);
-        watergun.setAccuracyMove(100);
-        watergun.setTypeMove("Water");
-        watergun.setCategoryMove("Special");
-        watergun.setPpMove(25);
-
-        Moves vinewhip = new Moves();
-        vinewhip.setNameMove("Vinewhip");
-        vinewhip.setPowerMove(45);
-        vinewhip.setAccuracyMove(100);
-        vinewhip.setTypeMove("Grass");
-        vinewhip.setCategoryMove("Physical");
-        vinewhip.setPpMove(25);
-
-        Types base = new Types();
-        base.setTypeStat(1);
-        base.setTypeAccuracy(0);
-
-//       System.out.println(ember.getTypeMove());
+        BattleModifier base = new BattleModifier();
+        
         Battle(bulbasaur, charmander, vinewhip, ember, base);
+
+        
+//      System.out.println(bulbasaur.getHpPoke());
+//      System.out.println(ember.getTypeMove());
+        
 
     }
 

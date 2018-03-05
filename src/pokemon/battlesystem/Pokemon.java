@@ -36,7 +36,33 @@ public class Pokemon {
         this.Move1Poke = null;
         this.Move2Poke = null;
         this.LevelPoke = 0;
-        
+    }
+    
+    public Pokemon(String naam, String type1, String type2, int HP, int ATK, int DEF, int SPATK, int SPDEF, int SPEED, String move1, int level){
+        NaamPoke = naam;
+        Type1Poke = type1;
+        Type2Poke = type2;
+        HpPoke = HP;
+        AtkPoke = ATK;
+        DefPoke = DEF;
+        SpAtkPoke = SPATK;
+        SpDefPoke = SPDEF;
+        SpeedPoke = SPEED;
+        Move1Poke = move1;
+        LevelPoke = level;
+    }
+    
+    public Pokemon(String naam, String type1, int HP, int ATK, int DEF, int SPATK, int SPDEF, int SPEED, String move1, int level){
+        NaamPoke = naam;
+        Type1Poke = type1;
+        HpPoke = HP;
+        AtkPoke = ATK;
+        DefPoke = DEF;
+        SpAtkPoke = SPATK;
+        SpDefPoke = SPDEF;
+        SpeedPoke = SPEED;
+        Move1Poke = move1;
+        LevelPoke = level;
     }
     
     @Override

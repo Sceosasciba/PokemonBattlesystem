@@ -25,11 +25,19 @@ public class Moves {
     this.TypeMove = null;
     this.CategoryMove = null;
     this.PpMove = 0;
+    }
+    
+    public Moves(String naam, int power, int accuracy, String type, String category, int pp){
+        NameMove = naam;
+        PowerMove = power;
+        AccuracyMove = accuracy;
+        TypeMove = type;
+        CategoryMove = category;
+        PpMove = pp;
+    }
     
     
-    
-    
-}
+
 
     @Override
     public String toString() {

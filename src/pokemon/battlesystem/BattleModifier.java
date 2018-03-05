@@ -9,11 +9,26 @@ package pokemon.battlesystem;
  *
  * @author Stan
  */
-public class Types {
+public class BattleModifier {
     
     private double TypeStat;
     private double TypeMultiplier;
     private int TypeAccuracy;
+    private int TypeCriticalHit;
+    
+    public BattleModifier(){
+        this.TypeStat = 1;
+        this.TypeMultiplier = 0;
+        this.TypeAccuracy = 0;
+    }
+
+    public void setTypeCriticalHit(int TypeCriticalHit) {
+        this.TypeCriticalHit = TypeCriticalHit;
+    }
+
+    public int getTypeCriticalHit() {
+        return TypeCriticalHit;
+    }
 
     public void setTypeAccuracy(int TypeAccuracy) {
         this.TypeAccuracy = TypeAccuracy;
@@ -21,11 +36,6 @@ public class Types {
 
     public int getTypeAccuracy() {
         return TypeAccuracy;
-    }
-    
-    public Types(){
-        this.TypeStat = 0;
-        this.TypeMultiplier = 0;
     }
 
     public double getTypeMultiplier() {
