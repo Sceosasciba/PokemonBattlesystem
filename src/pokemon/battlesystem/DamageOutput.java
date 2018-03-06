@@ -10,6 +10,7 @@ package pokemon.battlesystem;
  * @author Stan
  */
 public class DamageOutput {
+
     public static int DamageOutput(Pokemon attacker, Pokemon defender, Moves move, BattleModifier base) {
 
         //Super effective or not
@@ -113,10 +114,48 @@ public class DamageOutput {
         }
 
         //CriticalHit
-        base.setTypeCriticalHit(0);
+        base.setTypeCritical(0);
         double random2 = Math.random() * 100;
-        
-        
+        //Stage 0
+        if (base.getTypeCriticalHit() == 0) {
+            if (random2 <= base.getTypeCriticalHitPercentage()) {
+                double getValue = base.getTypeStat();
+                double multiplierType = getValue * 1.5;
+                base.setTypeStat(multiplierType);
+                base.setTypeCritical(1);
+            }
+            //Stage 1
+        } else if (base.getTypeCriticalHit() == 1) {
+            base.setTypeCriticalHitPercentage(12.5);
+            if (random2 <= base.getTypeCriticalHitPercentage()) {
+                double getValue = base.getTypeStat();
+                double multiplierType = getValue * 1.5;
+                base.setTypeStat(multiplierType);
+                base.setTypeCritical(1);
+            }
+            //Stage 2
+        } else if (base.getTypeCriticalHit() == 2) {
+            base.setTypeCriticalHitPercentage(50);
+            if (random2 <= base.getTypeCriticalHitPercentage()) {
+                double getValue = base.getTypeStat();
+                double multiplierType = getValue * 1.5;
+                base.setTypeStat(multiplierType);
+                base.setTypeCritical(1);
+            }
+            //Stage 3 (100% crit chance)
+        } else if (base.getTypeCriticalHit() == 2) {
+            base.setTypeCriticalHitPercentage(100);
+            if (random2 <= base.getTypeCriticalHitPercentage()) {
+                double getValue = base.getTypeStat();
+                double multiplierType = getValue * 1.5;
+                base.setTypeStat(multiplierType);
+                base.setTypeCritical(1);
+            }
+        }
+        if (base.getTypeCritical() == 1) {
+            base.setTypeCriticalHitText(" A critical hit!");
+        }
+
         //Damage calculations
         double modifier = base.getTypeStat() * 1;
         if (move.getCategoryMove() == "Physical") {
@@ -134,7 +173,5 @@ public class DamageOutput {
         }
 
     }
-    
-    
-}
 
+}

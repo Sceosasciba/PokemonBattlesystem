@@ -5,7 +5,7 @@
  */
 package pokemon.battlesystem;
 
-import static pokemon.battlesystem.Battle.Battle;
+import static pokemon.battlesystem.Battle.PokemonBattle;
 
 
 /**
@@ -31,10 +31,15 @@ public class PokemonBattlesystem {
         Moves ember = new Moves("Ember", 60, 100, "Fire", "Special", 25);
         Moves watergun = new Moves("Watergun", 40, 100, "Water", "Special", 25);
         Moves vinewhip = new Moves("Vinewhip", 45, 100, "Grass", "Physical", 25);
-
-        BattleModifier base = new BattleModifier();
         
-        Battle(bulbasaur, charmander, vinewhip, ember, base);
+        Battle battle = new Battle();
+        BattleModifier base = new BattleModifier();
+        Text text = new Text();
+        
+        PokemonBattle(bulbasaur, charmander, vinewhip, ember, base, battle, text);
+        
+        
+        
 
         
 //      System.out.println(bulbasaur.getHpPoke());
